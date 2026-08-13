@@ -1,0 +1,19 @@
+{
+  "name": "straylight",
+  "version": "1.0.0",
+  "description": "Straylight - fullstack synthwave racer (Three.js + Express + JWT auth + saved progress + leaderboards)",
+  "main": "server/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "lowdb": "^1.0.0",
+    "playwright-core": "^1.62.1"
+  }
+}

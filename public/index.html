@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STRAYLIGHT // night drive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="canvas-wrap"></div>
+<div class="scanlines" aria-hidden="true"></div>
+<div id="music-control" class="music-control" title="Toggle synthwave music">
+  <span class="music-eq"><i></i><i></i><i></i><i></i></span>
+  <span id="music-label">MUSIC OFF</span>
+</div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ============ HUD ============ -->
+<div id="hud">
+  <div class="hud-row">
+    <div>
+      <div id="title-badge" class="badge">STRAY<b>LIGHT</b></div>
+      <div id="car-badge" class="badge" style="display:none;"></div>
+      <div id="user-badge" class="badge" style="display:none;"></div>
+    </div>
+    <div id="speed-badge" class="badge">
+      <div id="speed-num">000</div>
+      <div id="speed-unit">KM/H</div>
+    </div>
+  </div>
+  <div class="hud-row">
+    <div id="score-badge" class="badge">DISTANCE<br><span id="score-num">0</span> m</div>
+    <div id="coin-badge" class="badge">CREDITS<br><span id="hud-coin-num">0</span></div>
+  </div>
+</div>
+
+<div id="speedbar-wrap"><div id="speedbar-fill"></div></div>
+<div id="nitrobar-wrap"><div class="bar-top"><span>NITRO BOOST</span><b id="nitro-percent">100%</b></div><div class="bar-track"><div id="nitrobar-fill"></div></div></div>
+
+<div id="mission-toast-wrap"></div>
+
+<div id="crash-flash"></div>
+<div id="lightning-flash"></div>
+
+<div id="touch-controls">
+  <div id="steer-pad">
+    <div class="tbtn steer-btn" id="btn-left" role="button" aria-label="Steer left"><span>◀</span><small>LEFT</small></div>
+    <div class="tbtn steer-btn" id="btn-right" role="button" aria-label="Steer right"><span>▶</span><small>RIGHT</small></div>
+  </div>
+  <div style="display:flex; gap:14px;">
+    <div class="tbtn" id="btn-brake" role="button" aria-label="Brake">▼</div>
+    <div class="tbtn wide nitro-btn" id="btn-nitro" role="button" aria-label="Activate nitro"><span class="nitro-icon">⚡</span><span class="nitro-label">NITRO</span><span class="nitro-hint">HOLD</span></div>
+    <div class="tbtn" id="btn-gas" role="button" aria-label="Accelerate">▲</div>
+  </div>
+</div>
+
+<!-- ============ AUTH ============ -->
+<div id="auth-overlay" class="overlay">
+  <h1>STRAYLIGHT</h1>
+  <div class="eyebrow">NIGHT // DRIVE // SYSTEM</div>
+  <div class="sub">A synthwave night drive in a modern hypercar. Sign in to save your progress, unlock tracks and cars, and climb the leaderboard.</div>
+
+  <div id="auth-box">
+    <div class="auth-tabs">
+      <div class="auth-tab selected" data-tab="login">SIGN IN</div>
+      <div class="auth-tab" data-tab="register">CREATE ACCOUNT</div>
+    </div>
+    <form id="auth-form">
+      <input type="text" id="auth-username" placeholder="USERNAME" autocomplete="username" required minlength="3">
+      <input type="password" id="auth-password" placeholder="PASSWORD" autocomplete="current-password" required minlength="4">
+      <div id="auth-error" class="auth-error hidden"></div>
+      <button type="submit" class="playbtn" id="auth-submit">▶ SIGN IN</button>
+    </form>
+    <button class="playbtn ghost" id="guest-btn">CONTINUE AS GUEST</button>
+  </div>
+</div>
+
+<!-- ============ START / GARAGE ============ -->
+<div id="start-overlay" class="garage-shell overlay hidden">
+  <header class="garage-topbar">
+    <div class="brand-lockup"><span>SL</span><div><b>STRAYLIGHT</b><small>RACING DIVISION · 02:17 AM</small></div></div>
+    <div class="driver-readout"><small>DRIVER</small><strong id="welcome-line">GUEST</strong></div>
+    <div class="wallet"><small>CREDITS</small><strong><span id="garage-coin-num">0</span> CR</strong></div>
+  </header>
+  <aside class="garage-nav">
+    <div class="nav-caption">CONTROL ROOM</div>
+    <button class="panel-tab active" data-panel="garage-car"><span>01</span> GARAGE</button>
+    <button class="panel-tab" data-panel="garage-track"><span>02</span> ROUTES</button>
+    <button class="panel-tab" data-panel="garage-career"><span>03</span> CAREER</button>
+    <button class="panel-tab" data-panel="garage-events"><span>04</span> EVENTS</button>
+    <button class="panel-tab" data-panel="garage-mode"><span>05</span> MODES</button>
+    <button class="panel-tab" data-panel="garage-leaderboard"><span>06</span> RANKINGS</button>
+    <div class="nav-footer">ONLINE<br><b>SERVER LINKED</b></div>
+  </aside>
+  <main class="garage-main">
+    <section class="garage-panel" id="garage-car"><div class="section-head"><div><small>GARAGE / FLEET</small><h2>Choose your machine.</h2></div><div class="micro-copy">Original 3D silhouettes inspired by real-world performance cars.</div></div><div id="car-select" class="car-grid"></div></section>
+    <section class="garage-panel hidden" id="garage-track"><div class="section-head"><div><small>ROUTES / WORLD</small><h2>Pick the road.</h2></div></div><div id="track-select" class="route-grid"></div></section>
+    <section class="garage-panel hidden" id="garage-career"><div class="section-head"><div><small>CAREER / REWARDS</small><h2>Build your record.</h2></div></div><div id="mission-list" class="mission-grid"></div></section>
+    <section class="garage-panel hidden" id="garage-events"><div class="section-head"><div><small>EVENTS / LIMITED</small><h2>Tonight's grid.</h2></div></div><div id="event-select" class="event-grid"></div></section>
+    <section class="garage-panel hidden" id="garage-mode"><div class="section-head"><div><small>MODES / PLAYLIST</small><h2>Choose your rules.</h2></div></div><div id="mode-select" class="mode-grid"></div></section>
+    <section class="garage-panel hidden" id="garage-leaderboard"><div class="section-head"><div><small>RANKINGS / GLOBAL</small><h2>Fastest drivers.</h2></div><span id="leaderboard-track-label"></span></div><div id="leaderboard-list" class="rank-list"></div></section>
+  </main>
+  <footer class="launch-dock"><div><small>READY TO RACE</small><strong id="launch-mode">ENDLESS</strong><span id="launch-track">Tokyo Express</span></div><div class="controls-hint">← → STEER · W ACCEL · S BRAKE · SPACE NITRO</div><button class="playbtn launch" id="start-btn">START RACE <span>→</span></button><button class="playbtn ghost small" id="signout-btn">EXIT</button></footer>
+</div>
+
+<!-- ============ CRASH / RESULTS ============ -->
+<div id="crash-overlay" class="result-screen overlay hidden">
+  <div class="result-card"><div class="result-kicker">RUN COMPLETE</div><h1 class="crash-title">NIGHT OVER.</h1><div class="sub" id="crash-sub">You made it.</div><div class="finalscore"><span id="final-distance">0</span><small> M</small></div><div id="run-rewards" class="run-rewards"></div><div class="result-actions"><button class="playbtn launch" id="retry-btn">DRIVE AGAIN <span>→</span></button><button class="playbtn ghost" id="garage-btn">RETURN TO GARAGE</button></div></div>
+</div>
+
+<script src="vendor/three/three.min.js"></script>
+<!-- postprocessing addons (UMD builds matching three r128, attach onto THREE namespace) -->
+<script src="vendor/three/postprocessing/EffectComposer.js"></script>
+<script src="vendor/three/postprocessing/RenderPass.js"></script>
+<script src="vendor/three/postprocessing/ShaderPass.js"></script>
+<script src="vendor/three/shaders/CopyShader.js"></script>
+<script src="vendor/three/shaders/LuminosityHighPassShader.js"></script>
+<script src="vendor/three/postprocessing/UnrealBloomPass.js"></script>
+<script src="vendor/three/shaders/AfterimageShader.js"></script>
+<script src="vendor/three/postprocessing/AfterimagePass.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/postfx.js"></script>
+<script src="js/world.js"></script>
+<script src="js/car.js"></script>
+<script src="js/traffic.js"></script>
+<script src="js/powerups.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/music.js"></script>
+<script src="js/garage-ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

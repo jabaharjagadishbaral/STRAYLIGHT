@@ -1,0 +1,168 @@
+:root{--bg:#07090c;--panel:#0c1015;--panel2:#11171e;--line:#29313a;--text:#f5f7fa;--muted:#7e8994;--lime:#ff6b35;--red:#ff315a;--blue:#5fd8ff;--gold:#ffd166;--white:#f5f7fa}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050608;color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif}body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px);background-size:80px 80px}#canvas-wrap{position:fixed;inset:0;background:#050608}canvas{display:block;width:100%;height:100%}.scanlines{display:none}.vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 50% 48%,transparent 30%,rgba(0,0,0,.7) 100%)}
+/* Race HUD */
+#hud{position:fixed;inset:0;z-index:10;pointer-events:none;padding:18px 22px}.hud-row{display:flex;justify-content:space-between;align-items:flex-start}.hud-row:nth-child(2){position:absolute;left:22px;top:104px;gap:8px}.badge{background:rgba(5,7,9,.68);border:1px solid rgba(255,255,255,.1);padding:8px 11px;backdrop-filter:blur(8px);letter-spacing:2px}.#title-badge{font-weight:900}.badge b{color:var(--lime)}#car-badge,#user-badge{font-size:8px;color:var(--muted);margin-top:4px}#speed-badge{border-right:3px solid var(--lime);text-align:right;min-width:128px}#speed-num{font-size:48px;font-weight:900;line-height:.82;font-style:italic;letter-spacing:-3px}.#speed-unit{font-size:8px;color:var(--muted);letter-spacing:3px}.#score-badge,#coin-badge{font-size:8px;color:var(--muted)}#score-num,#hud-coin-num,#garage-coin-num{font-size:17px;color:var(--text);font-weight:900}.#speedbar-wrap{position:fixed;right:22px;bottom:26px;width:220px;height:4px;background:#242a30;z-index:10}#speedbar-fill{height:100%;background:var(--lime);box-shadow:0 0 12px rgba(215,255,53,.5)}#nitrobar-wrap{position:fixed;right:22px;bottom:42px;width:220px;height:4px;background:#242a30;z-index:10}#nitrobar-fill{height:100%;background:var(--red);box-shadow:0 0 12px rgba(255,75,62,.45)}#nitrobar-label{position:absolute;right:0;bottom:7px;font-size:7px;color:var(--red);letter-spacing:3px}
+#music-control{position:fixed;right:22px;top:112px;z-index:25;display:flex;align-items:center;gap:9px;background:rgba(5,7,9,.82);border:1px solid #34404b;padding:8px 11px;color:var(--muted);font-size:8px;letter-spacing:2px;cursor:pointer;backdrop-filter:blur(10px)}#music-control.on{color:var(--lime);border-color:var(--lime)}.music-eq{display:flex;gap:2px;height:11px;align-items:flex-end}.music-eq i{display:block;width:2px;height:5px;background:currentColor;animation:eq .35s ease-in-out infinite alternate}.music-eq i:nth-child(2){animation-delay:.08s}.music-eq i:nth-child(3){animation-delay:.17s}.music-eq i:nth-child(4){animation-delay:.26s}@keyframes eq{to{height:11px}}.music-control:not(.on) .music-eq i{animation-play-state:paused;height:2px}
+/* Auth */
+.overlay{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(90deg,rgba(3,5,7,.96),rgba(3,5,7,.74) 58%,rgba(3,5,7,.35));}.hidden{display:none!important}.overlay>*{position:relative}h1{margin:0;font-size:clamp(54px,9vw,118px);line-height:.82;letter-spacing:-6px;font-weight:950;font-style:italic;text-transform:uppercase}.auth-tabs{display:flex;border-bottom:1px solid var(--line)}#auth-box{width:min(430px,92vw);background:rgba(12,16,21,.96);border:1px solid var(--line);box-shadow:30px 35px 90px #000;text-align:left}#auth-form{padding:18px}.auth-tab{flex:1;padding:14px;text-align:center;font-size:9px;letter-spacing:2px;color:var(--muted);cursor:pointer}.auth-tab.selected{color:var(--lime);border-bottom:2px solid var(--lime)}input{width:100%;background:#07090c;border:1px solid #303a45;color:white;padding:14px 12px;margin-bottom:9px;outline:none;font-size:11px;letter-spacing:1px}input:focus{border-color:var(--lime)}.auth-error{color:var(--red);font-size:10px;margin:5px 0 10px}.playbtn{border:0;background:var(--lime);color:#070900;font-weight:950;padding:14px 22px;min-width:210px;font-size:11px;letter-spacing:2px;cursor:pointer;transition:transform .15s,filter .15s}.playbtn:hover{transform:translateY(-2px);filter:brightness(1.06)}.playbtn:active{transform:translateY(0)}.playbtn.ghost{background:transparent;color:var(--text);border:1px solid #3b4650;box-shadow:none}.playbtn.ghost:hover{border-color:var(--lime);color:var(--lime)}.playbtn.small{min-width:100px;padding:10px;font-size:9px}
+/* New garage: fixed shell, scrollable content, fixed launch dock. */
+.garage-shell{display:grid;grid-template-columns:210px 1fr;grid-template-rows:72px 1fr 84px;align-items:stretch;justify-content:stretch;text-align:left;padding:0;background:linear-gradient(115deg,rgba(5,7,9,.98) 0%,rgba(7,10,13,.93) 52%,rgba(7,10,13,.74));}.garage-topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--line);background:rgba(7,9,12,.9)}.brand-lockup{display:flex;align-items:center;gap:12px}.brand-lockup>span{display:grid;place-items:center;width:34px;height:34px;background:var(--lime);color:#070900;font-weight:950}.brand-lockup b{display:block;font-size:13px;letter-spacing:4px}.brand-lockup small,.driver-readout small,.wallet small{display:block;color:var(--muted);font-size:7px;letter-spacing:2px;margin-top:3px}.driver-readout{text-align:center}.driver-readout strong{font-size:10px;letter-spacing:2px}.wallet{text-align:right}.wallet strong{font-size:15px;color:var(--gold)}.garage-nav{grid-row:2;display:flex;flex-direction:column;padding:24px 14px;border-right:1px solid var(--line);background:rgba(9,12,16,.9)}.nav-caption{font-size:7px;color:#56616c;letter-spacing:3px;padding:0 12px 13px}.panel-tab{appearance:none;border:0;background:transparent;color:#71808d;text-align:left;padding:14px 12px;font-size:9px;letter-spacing:1.7px;cursor:pointer;display:flex;align-items:center;gap:12px;border-left:2px solid transparent}.panel-tab span{font-size:7px;color:#4d5964}.panel-tab:hover{color:var(--text);background:#11161c}.panel-tab.active{color:var(--lime);border-left-color:var(--lime);background:#11171d}.panel-tab.active span{color:var(--lime)}.nav-footer{margin-top:auto;padding:15px 12px;border-top:1px solid var(--line);font-size:7px;color:#4d5964;letter-spacing:1.5px;line-height:1.8}.nav-footer b{color:#7f8b95}.garage-main{grid-column:2;grid-row:2;min-width:0;min-height:0;overflow:auto;padding:30px 34px 28px}.garage-panel{width:100%;min-height:100%}.section-head{display:flex;align-items:end;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px}.section-head small{color:var(--lime);font-size:7px;letter-spacing:3px}.section-head h2{font-size:28px;margin:7px 0 0;letter-spacing:-1px}.micro-copy{max-width:300px;text-align:right;color:#697681;font-size:9px;line-height:1.5}.car-grid{display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:12px}.garage-car-card{appearance:none;color:var(--text);text-align:left;border:1px solid #28313a;background:#0c1116;padding:0;cursor:pointer;min-width:0;display:grid;grid-template-columns:110px 1fr;transition:.18s transform,.18s border-color,.18s background}.garage-car-card:hover{transform:translateY(-3px);border-color:#5b6773;background:#11171d}.garage-car-card.active{border-color:var(--lime);box-shadow:inset 3px 0 var(--lime)}.garage-car-card.locked{opacity:.55}.car-art{position:relative;min-height:190px;display:grid;place-items:center;background:linear-gradient(145deg,#11171c,#080b0e);overflow:hidden}.car-art:after{content:"";position:absolute;inset:auto 0 22px;height:1px;background:linear-gradient(90deg,transparent,#34414b,transparent)}.mini-car{width:72px;height:125px;position:relative;transform:perspective(260px) rotateX(4deg) rotateZ(-2deg);filter:drop-shadow(0 12px 10px rgba(0,0,0,.7))}.mini-car:before{content:"";position:absolute;left:6px;right:6px;top:25px;height:72px;background:linear-gradient(90deg,#090a0c 0 8%,var(--car) 9% 91%,#090a0c 92%);clip-path:polygon(19% 0,81% 0,94% 17%,100% 75%,88% 100%,12% 100%,0 75%,6% 17%);border-radius:20px 20px 10px 10px}.mini-car:after{content:"";position:absolute;left:18px;right:18px;top:14px;height:52px;background:linear-gradient(180deg,#0c1419,#26343d);clip-path:polygon(22% 0,78% 0,100% 75%,0 75%);border-radius:12px}.mini-car span{position:absolute;left:2px;right:2px;top:86px;height:6px;background:var(--glow);box-shadow:0 0 15px var(--glow)}.car-copy{padding:15px}.car-brand{font-size:7px;letter-spacing:3px;color:var(--muted)}.car-name{font-size:14px;font-weight:900;margin-top:4px}.car-class{font-size:8px;color:#75828d;margin-top:5px}.stat{display:grid;grid-template-columns:54px 1fr;align-items:center;gap:6px;margin-top:7px}.stat span{font-size:6px;text-transform:uppercase;color:#596570;letter-spacing:1px}.stat i{height:3px;background:#242c34}.stat i b{display:block;height:100%;background:var(--lime)}.lockline{font-size:7px;color:var(--gold);margin-top:11px;letter-spacing:1px}
+.route-grid,.mode-grid,.event-grid{display:grid;grid-template-columns:repeat(2,minmax(250px,1fr));gap:12px}.route-card,.mode-card,.event-card{appearance:none;color:var(--text);text-align:left;border:1px solid #28313a;background:#0c1116;padding:0;cursor:pointer;display:flex;gap:15px;align-items:stretch;min-height:125px}.route-card:hover,.mode-card:hover,.event-card:hover{border-color:#5c6974}.route-card.active,.mode-card.active,.event-card.active{border-color:var(--lime)}.route-card.locked{opacity:.45}.route-thumb{width:170px;flex:none;position:relative;background:linear-gradient(180deg,#131b2d,#080b10);overflow:hidden}.route-thumb:before{content:"";position:absolute;left:40%;top:-10%;width:20%;height:120%;background:#1b1d20;transform:skewX(-8deg)}.route-thumb:after{content:"";position:absolute;left:49%;top:0;height:100%;border-left:2px dashed rgba(255,255,255,.65)}.route-thumb.desert{background:linear-gradient(#d16a45,#1b1010)}.route-thumb.storm{background:linear-gradient(#102a3d,#071018)}.route-thumb.mountain{background:linear-gradient(#547487,#111a20)}.route-thumb span{position:absolute;left:12px;bottom:10px;font-size:7px;letter-spacing:2px;color:white}.route-card>div:last-child{padding:18px 16px}.route-card strong,.mode-card strong,.event-card strong{font-size:13px;display:block}.route-card small,.mode-card small,.event-card small{display:block;color:#71808b;font-size:8px;line-height:1.6;margin-top:7px}.route-card em{display:block;font-style:normal;color:var(--gold);font-size:7px;margin-top:14px}.mode-card{padding:18px;display:grid;grid-template-columns:38px 1fr 48px;grid-template-rows:auto auto;gap:5px 12px}.mode-number{grid-row:1/3;font-size:20px;color:#3a4650;font-weight:900}.mode-card b{grid-column:3;grid-row:1;text-align:right;color:var(--lime);font-size:10px}.mode-card small{grid-column:2/4}.event-card{padding:18px;display:block;position:relative;overflow:hidden}.event-card:after{content:"";position:absolute;width:150px;height:150px;border:1px solid rgba(215,255,53,.12);right:-55px;top:-55px;border-radius:50%}.event-date{font-size:7px;color:var(--red);letter-spacing:3px;margin-bottom:22px}.event-card b{display:block;color:var(--gold);font-size:9px;margin-top:16px}.mission-grid{display:grid;grid-template-columns:repeat(2,minmax(250px,1fr));gap:8px}.mission-row2{background:#0c1116;border:1px solid #252d35;padding:14px 15px;display:flex;justify-content:space-between;gap:14px;min-height:86px}.mission-row2 strong{display:block;font-size:10px}.mission-row2 small{display:block;color:#707e89;font-size:8px;margin-top:5px}.mission-row2>div{min-width:0;flex:1}.mission-row2>div>i{display:block;height:3px;background:#252c33;margin-top:12px}.mission-row2>div>i b{display:block;height:100%;background:var(--lime)}.mission-row2>span{font-size:8px;color:var(--gold);white-space:nowrap}.mission-row2.done{border-color:#3c4c2c}.mission-row2.done>span{color:var(--lime)}.rank-list{display:flex;flex-direction:column;gap:6px;max-width:760px}.rank-row{display:grid;grid-template-columns:50px 1fr 120px;align-items:center;background:#0c1116;border:1px solid #252d35;padding:13px 15px}.rank-row>b{color:var(--lime);font-size:10px}.rank-row span{font-size:10px}.rank-row strong{text-align:right;font-size:10px}.empty{padding:25px;color:#6f7b86;border:1px dashed #303944;font-size:9px}.launch-dock{grid-column:1/-1;grid-row:3;border-top:1px solid var(--line);background:rgba(8,11,14,.97);display:flex;align-items:center;gap:24px;padding:12px 24px;z-index:5}.launch-dock>div:first-child{min-width:210px}.launch-dock small{display:block;font-size:7px;color:#66737e;letter-spacing:2px}.launch-dock strong{display:inline-block;color:var(--lime);font-size:11px;margin-top:3px}.launch-dock span{font-size:9px;color:#a7b0b8;margin-left:9px}.controls-hint{font-size:7px;color:#5f6c77;letter-spacing:1px;flex:1}.playbtn.launch{min-width:190px}.playbtn.launch span{float:right;font-size:16px;line-height:10px}.launch-dock .small{min-width:70px}
+/* Result screen */
+.result-screen{background:rgba(4,6,8,.78);backdrop-filter:blur(4px)}.result-card{width:min(520px,92vw);background:#0b1015;border:1px solid #303943;padding:34px;box-shadow:25px 30px 90px #000;text-align:left}.result-kicker{font-size:8px;letter-spacing:4px;color:var(--red)}.crash-title{font-size:60px;margin-top:10px}.sub{max-width:620px;color:#9ba7b2;font-size:11px;line-height:1.6;margin:8px 0 16px}.finalscore{font-size:74px;font-weight:950;line-height:.9;color:var(--lime);font-style:italic}.finalscore small{font-size:11px;letter-spacing:3px;color:#77838d;font-style:normal}.run-rewards{display:flex;flex-direction:column;gap:5px;margin:18px 0}.reward-line{font-size:9px;color:var(--gold)}.result-actions{display:flex;gap:9px;flex-wrap:wrap}
+#mission-toast-wrap{position:fixed;top:25px;left:50%;transform:translateX(-50%);z-index:30;display:flex;flex-direction:column;gap:6px;pointer-events:none}.mission-toast{background:#0c1116;border:1px solid var(--lime);padding:9px 15px;color:var(--lime);font-size:9px;letter-spacing:1px;box-shadow:0 12px 35px #000;animation:toast 3.4s ease forwards}@keyframes toast{0%{opacity:0;transform:translateY(-12px)}10%,85%{opacity:1;transform:none}100%{opacity:0}}
+#crash-flash{position:fixed;inset:0;background:var(--red);opacity:0;pointer-events:none;z-index:31}#lightning-flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:30}
+#touch-controls{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;justify-content:space-between;align-items:flex-end;padding:14px 18px;pointer-events:none}.#steer-pad{display:flex;gap:8px}.tbtn{pointer-events:all;width:66px;height:58px;border:1px solid rgba(255,255,255,.28);background:rgba(6,8,10,.82);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;user-select:none;backdrop-filter:blur(8px);touch-action:none}.tbtn:active{background:var(--lime);color:#070900;border-color:var(--lime);transform:scale(.96)}.tbtn.wide{width:82px;font-size:8px;letter-spacing:1px;color:var(--red)}#touch-controls>div{display:flex;gap:8px}
+@media (hover:none),(pointer:coarse){#touch-controls{display:flex}}@media(max-width:900px){.garage-shell{grid-template-columns:72px 1fr;grid-template-rows:62px 1fr 78px}.garage-topbar{padding:0 15px}.brand-lockup b{font-size:10px}.brand-lockup small,.driver-readout{display:none}.garage-nav{padding:14px 7px}.nav-caption,.nav-footer{display:none}.panel-tab{padding:12px 8px;justify-content:center}.panel-tab span{display:none}.panel-tab{font-size:0}.panel-tab:after{content:attr(data-panel);font-size:7px;writing-mode:vertical-rl;text-orientation:mixed;opacity:.7}.panel-tab.active:after{opacity:1}.garage-main{padding:22px 18px}.car-grid{grid-template-columns:repeat(2,minmax(190px,1fr))}.route-grid,.mode-grid,.event-grid,.mission-grid{grid-template-columns:1fr}.launch-dock{padding:10px 12px;gap:10px}.controls-hint{display:none}.launch-dock>div:first-child{min-width:0;flex:1}.playbtn.launch{min-width:140px}.launch-dock .small{display:none}.section-head h2{font-size:22px}.#music-control{top:80px;right:12px}.hud-row:nth-child(2){left:12px;top:88px}.#speedbar-wrap,#nitrobar-wrap{right:12px;width:150px}}
+@media(max-width:560px){.garage-shell{grid-template-columns:1fr;grid-template-rows:58px 1fr 74px}.garage-nav{grid-row:2;grid-column:1;position:absolute;left:0;right:0;top:58px;height:46px;z-index:4;display:flex;flex-direction:row;padding:0;border-right:0;border-bottom:1px solid var(--line);overflow:auto}.panel-tab{flex:0 0 auto;height:45px;padding:0 13px;font-size:7px;writing-mode:horizontal-tb!important}.panel-tab:after{writing-mode:horizontal-tb;content:attr(data-panel);font-size:7px}.garage-main{grid-column:1;grid-row:2;padding:62px 13px 18px}.garage-topbar{grid-column:1}.car-grid{grid-template-columns:1fr}.garage-car-card{grid-template-columns:100px 1fr}.car-art{min-height:165px}.launch-dock{grid-column:1;grid-row:3}.launch-dock strong{font-size:9px}.launch-dock span{display:block;margin:4px 0 0}.playbtn.launch{min-width:125px;padding:13px 12px}.route-thumb{width:110px}.result-card{padding:24px}.crash-title{font-size:44px}.finalscore{font-size:60px}.result-actions{flex-direction:column}.result-actions .playbtn{width:100%}}
+
+/* ===== APEX LAYOUT FIX v3 ===== */
+.garage-shell{overflow:hidden!important;min-height:0!important;}
+.garage-main{overflow-y:auto!important;overflow-x:hidden!important;min-height:0!important;scrollbar-gutter:stable;padding-bottom:34px!important;}
+.launch-dock{position:relative!important;min-width:0!important;min-height:84px!important;overflow:hidden!important;display:grid!important;grid-template-columns:minmax(180px,1fr) minmax(240px,auto) minmax(170px,210px) 76px!important;align-items:center!important;gap:14px!important;padding:12px 24px!important;}
+.launch-dock>div{min-width:0!important;}
+.launch-dock>div:first-child{min-width:0!important;}
+.launch-dock .controls-hint{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0!important;}
+.launch-dock .playbtn{width:100%!important;min-width:0!important;max-width:none!important;white-space:nowrap;}
+.launch-dock .playbtn.small{width:100%!important;min-width:0!important;}
+
+/* Result screen: never allow actions to collide or escape the card. */
+.result-screen{overflow:auto!important;padding:24px!important;align-items:center!important;justify-content:center!important;}
+.result-card{width:min(620px,calc(100vw - 48px))!important;max-height:calc(100dvh - 48px)!important;overflow:auto!important;padding:32px!important;}
+.result-actions{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:12px!important;width:100%!important;}
+.result-actions .playbtn{width:100%!important;min-width:0!important;max-width:none!important;white-space:normal!important;line-height:1.2!important;}
+
+/* Touch controls: isolated from overlays and never stack on top of one another. */
+#touch-controls{pointer-events:none!important;gap:12px!important;}
+#touch-controls>#steer-pad,#touch-controls>div:last-child{display:flex!important;gap:10px!important;flex:0 0 auto!important;}
+#touch-controls .tbtn{flex:0 0 66px!important;}
+#touch-controls .tbtn.wide{flex-basis:82px!important;}
+
+@media(max-width:900px){
+  .launch-dock{grid-template-columns:minmax(0,1fr) minmax(140px,180px) 70px!important;grid-template-areas:"info start exit";gap:10px!important;padding:10px 12px!important;}
+  .launch-dock>div:first-child{grid-area:info!important;}
+  .launch-dock .controls-hint{display:none!important;}
+  .launch-dock .playbtn.launch{grid-area:start!important;}
+  .launch-dock .playbtn.small{grid-area:exit!important;display:block!important;}
+}
+@media(max-width:560px){
+  .garage-shell{grid-template-rows:58px minmax(0,1fr) 88px!important;}
+  .garage-main{padding-bottom:20px!important;}
+  .launch-dock{grid-template-columns:minmax(0,1fr) minmax(118px,145px)!important;grid-template-areas:"info start"!important;min-height:88px!important;padding:9px 10px!important;}
+  .launch-dock .playbtn.small{display:none!important;}
+  .launch-dock strong{font-size:8px!important;}
+  .launch-dock span{font-size:8px!important;margin-left:0!important;}
+  .result-screen{padding:12px!important;}
+  .result-card{width:calc(100vw - 24px)!important;max-height:calc(100dvh - 24px)!important;padding:22px!important;}
+  .result-actions{grid-template-columns:1fr!important;gap:9px!important;}
+  .result-actions .playbtn{width:100%!important;min-height:48px!important;}
+  #touch-controls{padding:10px 10px 12px!important;}
+  #touch-controls>#steer-pad,#touch-controls>div:last-child{gap:7px!important;}
+  #touch-controls .tbtn{flex-basis:58px!important;width:58px!important;height:54px!important;}
+  #touch-controls .tbtn.wide{flex-basis:76px!important;width:76px!important;}
+}
+
+/* ===== APEX RACE CONTROLS / UX UPGRADE ===== */
+#nitrobar-wrap{bottom:48px;width:250px;height:auto;background:transparent;z-index:41;}
+#nitrobar-wrap .bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;font-size:8px;letter-spacing:2px;color:#ff8f7f;}
+#nitrobar-wrap .bar-top b{font-size:9px;color:#fff;}
+#nitrobar-wrap .bar-track{height:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);overflow:hidden;transform:skewX(-12deg);}
+#nitrobar-fill{height:100%;width:100%;background:linear-gradient(90deg,#ff4b3e,#ffb347);box-shadow:0 0 16px rgba(255,90,55,.55);transition:width .12s linear;}
+#nitrobar-fill::after{content:"";display:block;width:35%;height:100%;margin-left:65%;background:rgba(255,255,255,.35);filter:blur(3px);}
+.tbtn{transition:transform .12s ease,background .12s ease,border-color .12s ease,box-shadow .12s ease;}
+.tbtn.pressed{transform:translateY(2px) scale(.94);background:var(--lime);color:#050608;border-color:var(--lime);box-shadow:0 0 20px rgba(215,255,53,.35);}
+.nitro-btn{position:relative;min-width:94px!important;height:66px!important;border-color:rgba(255,75,62,.65)!important;color:#ff8f7f!important;background:linear-gradient(180deg,rgba(60,12,10,.9),rgba(12,8,9,.94))!important;flex-direction:column;gap:1px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 8px 25px rgba(0,0,0,.28);}
+.nitro-btn.ready{border-color:#ff6b5f!important;}
+.nitro-btn.boosting{color:#fff!important;background:linear-gradient(180deg,#ff5b48,#a91d16)!important;border-color:#ffb347!important;box-shadow:0 0 30px rgba(255,75,62,.5),inset 0 1px 0 rgba(255,255,255,.3);animation:boostPulse .22s infinite alternate;}
+.nitro-icon{font-size:18px;line-height:16px;}
+.nitro-label{font-size:9px;font-weight:900;letter-spacing:1.5px;}
+.nitro-hint{font-size:6px;letter-spacing:2px;opacity:.6;}
+@keyframes boostPulse{to{transform:scale(1.025);}}
+@media(max-width:900px){#nitrobar-wrap{right:12px;width:180px;bottom:102px;}#touch-controls{padding:12px 14px 16px;align-items:flex-end;}#touch-controls .tbtn{height:62px!important;width:62px!important;}#touch-controls .tbtn.wide{width:92px!important;flex-basis:92px!important;height:68px!important;}}
+@media(max-width:560px){#nitrobar-wrap{right:10px;bottom:92px;width:150px;}#touch-controls{padding:9px 9px 12px;gap:8px!important;}#touch-controls>#steer-pad,#touch-controls>div:last-child{gap:6px!important;}#touch-controls .tbtn{width:54px!important;flex-basis:54px!important;height:52px!important;}#touch-controls .tbtn.wide{width:78px!important;flex-basis:78px!important;height:58px!important;}#speedbar-wrap{bottom:22px;width:150px;right:10px;}#nitrobar-wrap .bar-top{font-size:7px;}}
+
+
+/* ===== APEX RACING HQ redesign ===== */
+body{background:#05070a}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.22;background:repeating-linear-gradient(135deg,transparent 0 70px,rgba(255,107,53,.045) 70px 72px,transparent 72px 145px)}
+.garage-shell{background:
+  radial-gradient(circle at 78% 20%,rgba(255,107,53,.09),transparent 28%),
+  radial-gradient(circle at 42% 90%,rgba(95,216,255,.05),transparent 24%),
+  linear-gradient(115deg,#07090c 0%,#0a0e13 55%,#080b0f 100%)}
+.garage-topbar{height:72px;background:rgba(5,7,10,.94);border-bottom:1px solid #303842}
+.brand-lockup>span{background:var(--lime);box-shadow:8px 0 0 rgba(255,107,53,.16)}
+.brand-lockup b{font-size:14px;letter-spacing:5px}
+.driver-readout strong{font-size:10px;color:#e8edf1}
+.wallet strong{color:var(--gold)}
+.garage-nav{background:rgba(8,11,15,.92);border-right:1px solid #303842}
+.panel-tab{position:relative;overflow:hidden}
+.panel-tab.active{color:#fff;border-left-color:var(--lime);background:linear-gradient(90deg,rgba(255,107,53,.14),transparent)}
+.panel-tab.active:before{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--lime)}
+.panel-tab.active span{color:var(--lime)}
+.garage-main{padding:34px 38px 34px;background:linear-gradient(180deg,rgba(255,255,255,.012),transparent)}
+.section-head{border-bottom:1px solid #303842;padding-bottom:20px;margin-bottom:20px}
+.section-head small{color:var(--lime);font-weight:900}
+.section-head h2{font-size:34px;letter-spacing:-1.5px}
+.section-head h2:after{content:" / APEX HQ";color:#3f4a54;font-size:11px;letter-spacing:2px;margin-left:10px}
+.car-grid{grid-template-columns:repeat(2,minmax(320px,1fr));gap:16px}
+.garage-car-card{grid-template-columns:150px 1fr;min-height:214px;background:linear-gradient(145deg,#0d1218,#090d11);border-color:#2b343e}
+.garage-car-card:hover{transform:translateY(-4px);border-color:#66717c;box-shadow:0 18px 40px rgba(0,0,0,.22)}
+.garage-car-card.active{border-color:var(--lime);box-shadow:inset 4px 0 var(--lime),0 18px 40px rgba(255,107,53,.08)}
+.car-art{min-height:214px;background:radial-gradient(circle at 50% 55%,rgba(255,107,53,.12),transparent 38%),linear-gradient(145deg,#151b21,#080b0e)}
+.car-art:before{content:"APEX";position:absolute;top:12px;left:12px;color:#3c4650;font-size:7px;letter-spacing:3px;font-weight:900}
+.car-copy{padding:18px}
+.car-brand{color:#89949e}
+.car-name{font-size:16px}
+.stat i b{background:linear-gradient(90deg,var(--lime),#ffb347)}
+.lockline{color:var(--gold)}
+.route-card,.mode-card,.event-card{background:linear-gradient(145deg,#0d1218,#090d11);border-color:#2b343e}
+.route-card.active,.mode-card.active,.event-card.active{border-color:var(--lime);box-shadow:inset 3px 0 var(--lime)}
+.event-card:after{border-color:rgba(255,107,53,.2)}
+.event-date{color:var(--red)}
+.launch-dock{background:rgba(5,7,10,.98);border-top:1px solid #303842;box-shadow:0 -14px 40px rgba(0,0,0,.25)}
+.playbtn{background:var(--lime);box-shadow:0 8px 25px rgba(255,107,53,.14)}
+.playbtn.ghost:hover{border-color:var(--lime);color:var(--lime)}
+.mission-row2{background:#0d1218;border-color:#2b343e}
+.mission-row2.done{border-color:#5a3a2d}
+.mission-action{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:8px;min-width:120px}
+.mission-action>span{font-size:8px;color:var(--gold);white-space:nowrap}
+.mission-row2.done .mission-action>span{color:var(--lime)}
+.claim-btn{border:1px solid var(--lime);background:rgba(255,107,53,.12);color:var(--lime);font-size:8px;font-weight:900;letter-spacing:1px;padding:9px 10px;cursor:pointer;white-space:nowrap}
+.claim-btn:hover{background:var(--lime);color:#0b0806}
+.claim-btn:disabled{opacity:.55;cursor:wait}
+
+/* Race-only layers: never cover the garage or result UI. */
+#hud,#speedbar-wrap,#nitrobar-wrap,#touch-controls{visibility:hidden;opacity:0}
+body.racing #hud,body.racing #speedbar-wrap,body.racing #nitrobar-wrap{visibility:visible;opacity:1}
+body.racing #touch-controls{visibility:visible;opacity:1}
+#nitrobar-wrap{bottom:104px!important;right:24px;width:270px;height:auto;background:transparent!important}
+#nitrobar-wrap .bar-top{display:flex;justify-content:space-between;margin-bottom:5px;color:#ff9a7c;font-size:8px;letter-spacing:2px}
+#nitrobar-wrap .bar-track{height:6px;background:#242a30;border:1px solid #343d46}
+#nitrobar-fill{background:linear-gradient(90deg,#ff4b2f,#ffb347)!important}
+#speedbar-wrap{bottom:86px!important;width:270px}
+#touch-controls{bottom:14px}
+body.racing #music-control{z-index:45}
+
+/* Result screen becomes a clean race podium panel. */
+.result-screen{background:rgba(3,5,7,.84);backdrop-filter:blur(10px)}
+.result-card{border:1px solid #3a434d;background:linear-gradient(145deg,#10151b,#080b0f);box-shadow:0 35px 100px #000}
+.result-kicker{color:var(--lime)}
+.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.result-actions .playbtn{width:100%;min-width:0}
+@media(max-width:720px){
+  .car-grid{grid-template-columns:1fr}
+  .garage-main{padding:22px 16px 30px}
+  .garage-car-card{grid-template-columns:120px 1fr}
+  #nitrobar-wrap{right:12px!important;bottom:92px!important;width:180px!important}
+  #speedbar-wrap{right:12px!important;bottom:82px!important;width:180px!important}
+}
+@media(max-width:560px){
+  .result-actions{grid-template-columns:1fr}
+  .mission-action{min-width:100px}
+  .claim-btn{font-size:7px;padding:8px}
+}
+
+.steer-btn{flex-direction:column;gap:2px}
+.steer-btn span{font-size:20px;line-height:20px}
+.steer-btn small{font-size:6px;letter-spacing:1.5px;color:#8b96a0}
+.steer-btn:active small{color:#0a0806}
