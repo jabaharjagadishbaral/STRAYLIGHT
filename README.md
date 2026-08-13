@@ -84,3 +84,4 @@ Two things worth doing before a real deployment:
 2. `server/data/db.json` is a flat file — fine for a personal project or small
    leaderboard, but swap in a real database (Postgres/SQLite) if you expect
    concurrent writes at scale.
+
