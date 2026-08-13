@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STRAYLIGHT // night drive</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="canvas-wrap"></div>
+
+<!-- ============ HUD ============ -->
+<div id="hud">
+  <div class="hud-row">
+    <div>
+      <div id="title-badge" class="badge">STRAY<b>LIGHT</b></div>
+      <div id="car-badge" class="badge" style="display:none;"></div>
+      <div id="user-badge" class="badge" style="display:none;"></div>
+    </div>
+    <div id="speed-badge" class="badge">
+      <div id="speed-num">000</div>
+      <div id="speed-unit">KM/H</div>
+    </div>
+  </div>
+  <div class="hud-row">
+    <div id="score-badge" class="badge">DISTANCE<br><span id="score-num">0</span> m</div>
+    <div id="coin-badge" class="badge">COINS<br><span id="coin-num">0</span></div>
+  </div>
+</div>
+
+<div id="speedbar-wrap"><div id="speedbar-fill"></div></div>
+<div id="nitrobar-wrap"><div id="nitrobar-fill"></div><div id="nitrobar-label">NITRO</div></div>
+
+<div id="mission-toast-wrap"></div>
+
+<div id="crash-flash"></div>
+<div id="lightning-flash"></div>
+
+<div id="touch-controls">
+  <div id="steer-pad">
+    <div class="tbtn" id="btn-left">◀</div>
+    <div class="tbtn" id="btn-right">▶</div>
+  </div>
+  <div style="display:flex; gap:14px;">
+    <div class="tbtn" id="btn-brake">▼</div>
+    <div class="tbtn wide" id="btn-nitro">NITRO</div>
+    <div class="tbtn" id="btn-gas">▲</div>
+  </div>
+</div>
+
+<!-- ============ AUTH ============ -->
+<div id="auth-overlay" class="overlay">
+  <h1>STRAYLIGHT</h1>
+  <div class="sub">A synthwave night drive in a modern hypercar. Sign in to save your progress, unlock tracks and cars, and climb the leaderboard.</div>
+
+  <div id="auth-box">
+    <div class="auth-tabs">
+      <div class="auth-tab selected" data-tab="login">SIGN IN</div>
+      <div class="auth-tab" data-tab="register">CREATE ACCOUNT</div>
+    </div>
+    <form id="auth-form">
+      <input type="text" id="auth-username" placeholder="USERNAME" autocomplete="username" required minlength="3">
+      <input type="password" id="auth-password" placeholder="PASSWORD" autocomplete="current-password" required minlength="4">
+      <div id="auth-error" class="auth-error hidden"></div>
+      <button type="submit" class="playbtn" id="auth-submit">▶ SIGN IN</button>
+    </form>
+    <button class="playbtn ghost" id="guest-btn">CONTINUE AS GUEST</button>
+  </div>
+</div>
+
+<!-- ============ START / GARAGE ============ -->
+<div id="start-overlay" class="overlay hidden">
+  <h1>STRAYLIGHT</h1>
+  <div class="sub" id="welcome-line">Weave through traffic, hold your nerve, chase the horizon.</div>
+
+  <div class="panel-tabs">
+    <div class="panel-tab selected" data-panel="garage-car">CAR</div>
+    <div class="panel-tab" data-panel="garage-track">TRACK</div>
+    <div class="panel-tab" data-panel="garage-career">CAREER</div>
+    <div class="panel-tab" data-panel="garage-leaderboard">LEADERBOARD</div>
+  </div>
+
+  <div id="garage-car" class="garage-panel">
+    <div class="select-label">CHOOSE YOUR HYPERCAR</div>
+    <div id="car-select"></div>
+  </div>
+
+  <div id="garage-track" class="garage-panel hidden">
+    <div class="select-label">CHOOSE YOUR ROUTE</div>
+    <div id="track-select"></div>
+  </div>
+
+  <div id="garage-career" class="garage-panel hidden">
+    <div class="select-label">MISSIONS</div>
+    <div id="mission-list"></div>
+  </div>
+
+  <div id="garage-leaderboard" class="garage-panel hidden">
+    <div class="select-label">TOP DRIVERS <span id="leaderboard-track-label"></span></div>
+    <div id="leaderboard-list"></div>
+  </div>
+
+  <div class="keys">
+    <div class="key">◀ / A — steer left</div>
+    <div class="key">▶ / D — steer right</div>
+    <div class="key">▲ / W — accelerate</div>
+    <div class="key">▼ / S — brake</div>
+    <div class="key">SPACE — nitro</div>
+  </div>
+  <button class="playbtn" id="start-btn">▶ START DRIVE</button>
+  <button class="playbtn ghost small" id="signout-btn">SIGN OUT</button>
+</div>
+
+<!-- ============ CRASH / RESULTS ============ -->
+<div id="crash-overlay" class="overlay hidden">
+  <h1 class="crash-title">WRECKED</h1>
+  <div class="sub" id="crash-sub">You made it</div>
+  <div class="finalscore"><span id="final-distance">0</span> m</div>
+  <div id="run-rewards" class="run-rewards"></div>
+  <button class="playbtn" id="retry-btn">↻ DRIVE AGAIN</button>
+  <button class="playbtn ghost small" id="garage-btn">GARAGE</button>
+</div>
+
+<script src="vendor/three/three.min.js"></script>
+<!-- postprocessing addons (UMD builds matching three r128, attach onto THREE namespace) -->
+<script src="vendor/three/postprocessing/EffectComposer.js"></script>
+<script src="vendor/three/postprocessing/RenderPass.js"></script>
+<script src="vendor/three/postprocessing/ShaderPass.js"></script>
+<script src="vendor/three/shaders/CopyShader.js"></script>
+<script src="vendor/three/shaders/LuminosityHighPassShader.js"></script>
+<script src="vendor/three/postprocessing/UnrealBloomPass.js"></script>
+<script src="vendor/three/shaders/AfterimageShader.js"></script>
+<script src="vendor/three/postprocessing/AfterimagePass.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth-ui.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/postfx.js"></script>
+<script src="js/world.js"></script>
+<script src="js/car.js"></script>
+<script src="js/traffic.js"></script>
+<script src="js/powerups.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/garage-ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

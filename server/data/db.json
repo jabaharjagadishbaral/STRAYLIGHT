@@ -1,0 +1,89 @@
+{
+  "users": [
+    {
+      "id": "89fb5b88-4d77-41e4-90bf-29d4ca2fe084",
+      "username": "goutam",
+      "passwordHash": "$2a$10$p2fSJaNKhrpRLF7Xns9U.eE5e8JnHrQiKhOmB4VQE9fDxECjponX.",
+      "createdAt": "2026-08-13T13:59:28.951Z"
+    }
+  ],
+  "progress": {
+    "89fb5b88-4d77-41e4-90bf-29d4ca2fe084": {
+      "coins": 335,
+      "bestDistance": 1166,
+      "bestSpeed": 287,
+      "totalRuns": 2,
+      "totalNitro": 3,
+      "selectedCar": 0,
+      "unlockedCars": [
+        0,
+        1,
+        2
+      ],
+      "unlockedTracks": [
+        "city"
+      ],
+      "trackRunHistory": [
+        "city"
+      ],
+      "missions": {
+        "speed_1": {
+          "progress": 287,
+          "done": true
+        },
+        "speed_2": {
+          "progress": 287,
+          "done": false
+        },
+        "distance_1": {
+          "progress": 1166,
+          "done": false
+        },
+        "distance_2": {
+          "progress": 1166,
+          "done": false
+        },
+        "nitro_1": {
+          "progress": 3,
+          "done": false
+        },
+        "nitro_2": {
+          "progress": 3,
+          "done": false
+        },
+        "runs_1": {
+          "progress": 2,
+          "done": false
+        },
+        "track_desert": {
+          "progress": 0,
+          "done": false
+        },
+        "track_storm": {
+          "progress": 0,
+          "done": false
+        }
+      }
+    }
+  },
+  "scores": [
+    {
+      "id": "b20eb833-0fd6-4e23-b2e7-7636b325110e",
+      "userId": "89fb5b88-4d77-41e4-90bf-29d4ca2fe084",
+      "username": "goutam",
+      "distance": 1166,
+      "track": "city",
+      "car": 1,
+      "createdAt": "2026-08-13T14:00:21.137Z"
+    },
+    {
+      "id": "acf36fe6-1dc0-4cae-a31c-b3850120b036",
+      "userId": "89fb5b88-4d77-41e4-90bf-29d4ca2fe084",
+      "username": "goutam",
+      "distance": 549,
+      "track": "city",
+      "car": 1,
+      "createdAt": "2026-08-13T14:00:37.867Z"
+    }
+  ]
+}
