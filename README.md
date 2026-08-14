@@ -19,3 +19,5 @@ Open `http://localhost:3000`.
 
 ## Note on cars
 The game uses original procedural 3D silhouettes and does not ship third-party manufacturer models/logos. Vehicle names are used as catalog references; the meshes are intentionally original.
+
+
